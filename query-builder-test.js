@@ -21,7 +21,7 @@ Tinytest.add("query-builder - no filters", function (test) {
   query.condition({ _id: "someId" });
   test.equal(
     testExecute(query),
-    { $and: [{ _id: "someId" }] },
+    { _id: "someId" },
     "simple id query"
   );
 });
@@ -64,7 +64,7 @@ Tinytest.add("query-builder - enable/disable filter", function (test) {
   var query = collection.query();
   test.equal(
     testExecute(query),
-    { $and: [{ deletedAt: null }] },
+    { deletedAt: null },
     "only use defaultFilters"
   );
   
@@ -78,7 +78,7 @@ Tinytest.add("query-builder - enable/disable filter", function (test) {
   query.filter("softDelete", false);
   test.equal(
     testExecute(query),
-    { $and: [{ owner: "Meteor.userId()" }] },
+    { owner: "Meteor.userId()" },
     "disable softDelete"
   );
   

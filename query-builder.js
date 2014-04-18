@@ -141,7 +141,9 @@ _.extend(Query.prototype, {
     }, this);
     
     var selector = {};
-    if (conditions.length > 0) {
+    if (conditions.length == 1) {
+      selector = conditions[0];
+    } else if (conditions.length > 1) {
       selector.$and = conditions;
     }
     return this._collection.find(selector, options);
