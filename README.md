@@ -18,7 +18,7 @@ Think now of a list of all users you application has:
 // client/views/person/person_index.js
 Template.PersonIndex.persons = function () {
   return Person.query().execute({ limit: 100 });
-  // executes Person.find({ deletedAt: null });
+  // executes Person.find({ deletedAt: null }, { limit: 100 });
 }
 ```
 But now you are an admin and want to see deleted users:
@@ -28,7 +28,7 @@ Template.PersonAdminIndex.persons = function () {
   var query = Person.query();
   query.filter('softDelete', false); // disable for this query
   return query.execute({ limit: 100 });
-  // executes Person.find({});
+  // executes Person.find({}, { limit: 100 });
 }
 ```
 Now you want to search a person (not admin anymore):
@@ -39,7 +39,7 @@ Template.PersonSearchIndex.persons = function () {
   
   // you could disable/enable filters here
   
-  return query.execute({ limit: 100 });
+  return query.execute();
   // executes Person.find({ $and: [{ name: "Max" }, { deletedAt: null }] });
 }
 ```
@@ -67,7 +67,7 @@ Person.filters({
 Template.CompanyPersonIndex.persons = function (company) {
   var query = Person.query();
   query.filter('employedAt', [company]);
-  return query.execute({ limit: 100 });
+  return query.execute();
   // executes Person.find({ $and: [{ employedAt: "[company id]" }, { deletedAt: null }] });
 }
 ```
