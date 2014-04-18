@@ -1,9 +1,9 @@
 {
   "name": "query-builder",
   "description": "helper to create reusable and extendable collection queries",
-  "homepage": "https://github.com/Nemo64/meteor-translator",
+  "homepage": "https://github.com/Nemo64/meteor-query-builder",
   "author": "Marco Pfeiffer <cheat2000-git@yahoo.de>",
   "version": "1.0.0",
-  "git": "https://github.com/Nemo64/meteor-translator.git",
+  "git": "https://github.com/Nemo64/meteor-query-builder.git",
   "packages": {}
 }
