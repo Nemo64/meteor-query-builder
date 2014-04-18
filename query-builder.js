@@ -2,7 +2,7 @@
 // - query()
 // - addFilter()
 // - defaultFilters()
-// - optionalFilters()
+// - filters()
 // - _queryBuilderfilter
 _.extend(Meteor.Collection.prototype, {
   /**
@@ -49,7 +49,7 @@ _.extend(Meteor.Collection.prototype, {
   /**
    * shortcut for addFilter with default false
    */
-  optionalFilters: function (obj) {
+  filters: function (obj) {
     _.each(obj, function (value, name) {
       this.addFilter(name, false, value);
     }, this);
@@ -85,13 +85,15 @@ Query._objectCondition = function (cond) {
 
 _.extend(Query.prototype, {
   /**
-   * enables or disables a filter
+   * enables or disables a filter.
+   * If the secound parameter is an array the values will
+   * be applied as arguments to the filter function (if it is a function)
    * 
    * @param {string} name
-   * @param {boolean} state
+   * @param {boolean|Array} args
    */
-  filter: function (name, state) {
-    this._filterMod[name] = state;
+  filter: function (name, args) {
+    this._filterMod[name] = args;
     // XXX should there be a warning if the filter does not exist?
   },
   
@@ -117,12 +119,20 @@ _.extend(Query.prototype, {
     // applie all filter conditions
     _.each(this._getFilters(), function (filter, name) {
       var isEnabled = filter.isDefault;
+      var args = [];
       if (this._filterMod.hasOwnProperty(name)) {
-        isEnabled = this._filterMod[name];
+        var mod = this._filterMod[name];
+        isEnabled = mod ? true : false;
+        if (_.isArray(mod)) {
+          args = mod;
+        }
       }
       if (isEnabled) {
         // TODO the callback probably wants some parameters
-        var cond = _.isFunction(filter.value) ? filter.value() : filter.value;
+        var cond = filter.value;
+        if (_.isFunction(filter.value)) {
+          cond = cond.apply(this, args);
+        }
         cond = Query._objectCondition(cond);
         if (cond != null) {
           conditions.push(cond);

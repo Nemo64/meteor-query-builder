@@ -54,8 +54,11 @@ Tinytest.add("query-builder - enable/disable filter", function (test) {
   collection.defaultFilters({
     softDelete: { deletedAt: null }
   });
-  collection.optionalFilters({
-    onlyOwn: { owner: "Meteor.userId()" }
+  collection.filters({
+    onlyOwn: { owner: "Meteor.userId()" },
+    callback: function (parameter) {
+      return { parameter: parameter }
+    }
   });
   
   var query = collection.query();
@@ -76,6 +79,13 @@ Tinytest.add("query-builder - enable/disable filter", function (test) {
   test.equal(
     testExecute(query),
     { $and: [{ owner: "Meteor.userId()" }] },
+    "disable softDelete"
+  );
+  
+  query.filter("callback", ['parameter']);
+  test.equal(
+    testExecute(query),
+    { $and: [{ owner: "Meteor.userId()" }, { parameter: 'parameter' }] },
     "disable softDelete"
   );
 });
