@@ -3,7 +3,7 @@
   "description": "helper to create reusable and extendable collection queries",
   "homepage": "https://github.com/Nemo64/meteor-translator",
   "author": "Marco Pfeiffer <cheat2000-git@yahoo.de>",
-  "version": "0.4.3",
+  "version": "1.0.0",
   "git": "https://github.com/Nemo64/meteor-translator.git",
   "packages": {}
 }
