@@ -66,7 +66,7 @@ Person.filters({
 // client/views/company/company_person_index.js
 Template.CompanyPersonIndex.persons = function (company) {
   var query = Person.query();
-  query.filter('employedAt', company);
+  query.filter('employedAt', [company]);
   return query.execute({ limit: 100 });
   // executes Person.find({ $and: [{ employedAt: "[company id]" }, { deletedAt: null }] });
 }
