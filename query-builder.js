@@ -109,14 +109,15 @@ _.extend(Query.prototype, {
   },
   
   /**
-   * Executes the query with the #find method on the collection.
+   * Builds the query and returns it!
+   * This is mostly usefull for tests and debugging.
    *
-   * @param {Object.<string, *>} options
+   * @returns {Object.<string, *>}
    */
-  execute: function (options) {
+  build: function () {
     var conditions = _.clone(this._conditions);
     
-    // applie all filter conditions
+    // apply all filter conditions
     _.each(this._getFilters(), function (filter, name) {
       var isEnabled = filter.isDefault;
       var args = [];
@@ -146,6 +147,16 @@ _.extend(Query.prototype, {
     } else if (conditions.length > 1) {
       selector.$and = conditions;
     }
+    return selector;
+  },
+  
+  /**
+   * Executes the query with the #find method on the collection.
+   *
+   * @param {Object.<string, *>} options
+   */
+  execute: function (options) {
+    var selector = this.build();
     return this._collection.find(selector, options);
   },
   
