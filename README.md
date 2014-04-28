@@ -61,8 +61,8 @@ Person.defaultFilters({
 
 // these filters are disabled by default
 Person.filters({
-  employedAt: function (/* companies */) {
-    return { employedAt: arguments };
+  employedAt: function (company) {
+    return { employedAt: company };
   }
   // heads up: normal filters can be simple object too
   // but in this example the filter is a function
