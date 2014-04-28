@@ -63,7 +63,7 @@ _.extend(Meteor.Collection.prototype, {
  */
 Query = function (collection) {
   this._collection = collection;
-  this._filterMod = {/* filterName: boolean */};
+  this._filterMod = {/* filterName: { enabled: boolean, args: [] } */};
   this._conditions = [];
 };
 
@@ -74,7 +74,7 @@ Query = function (collection) {
  * @return {Object}
  */
 Query._objectCondition = function (cond) {
-  if (_.isString(cond)) {
+  if (_.isString(cond) || (cond instanceof Meteor.Collection.ObjectID)) {
     return { _id: cond };
   } else if (_.isObject(cond)) {
     return cond;
@@ -175,7 +175,7 @@ _.extend(Query.prototype, {
    * @param {Object.<string, *>|string} rawCond
    */
   condition: function (rawCond) {
-    var cond = Query._objectCondition(cond);
+    var cond = Query._objectCondition(rawCond);
     if (cond == null) {
       throw new Error("Unknown condition type " + rawCond);
     }

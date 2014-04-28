@@ -89,3 +89,14 @@ Tinytest.add("query-builder - enable/disable filter", function (test) {
     "disable softDelete"
   );
 });
+
+Tinytest.add("query-builder - transform id to object", function (test) {
+  var collection = collectionMock();
+  var query = collection.query();
+  var obj = query.constructor._objectCondition;
+  
+  test.equal(obj({ _id: "id" }), { _id: "id" }, "don't touch objects");
+  test.equal(obj("id"), { _id: "id" }, "make object of id");
+  var id = new Meteor.Collection.ObjectID();
+  test.equal(obj(id), { _id: id }, "make object of mongo id");
+});
