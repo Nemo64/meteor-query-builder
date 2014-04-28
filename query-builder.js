@@ -172,12 +172,12 @@ _.extend(Query.prototype, {
    * eg: query.condition({ name: "Max" });
    * or: query.condition("mongoIdString");
    *
-   * @param {Object.<string, *>|string} cond
+   * @param {Object.<string, *>|string} rawCond
    */
-  condition: function (cond) {
-    cond = Query._objectCondition(cond);
+  condition: function (rawCond) {
+    var cond = Query._objectCondition(cond);
     if (cond == null) {
-      throw new Error("Unknown condition type " + typeof cond);
+      throw new Error("Unknown condition type " + rawCond);
     }
     this._conditions.push(cond);
   }
