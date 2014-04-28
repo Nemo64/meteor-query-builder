@@ -1,5 +1,5 @@
 Package.describe({
-  summary: "helper to create reusable and extendable collection queries"
+  summary: "helper to create reusable and extendable collection queries/selectors"
 });
 
 Package.on_use(function (api) {
