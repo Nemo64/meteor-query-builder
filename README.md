@@ -61,8 +61,8 @@ Person.defaultFilters({
 
 // these filters are disabled by default
 Person.filters({
-  employedAt: function (company) {
-    return { employedAt: company._id };
+  employedAt: function (/* companies */) {
+    return { employedAt: arguments };
   }
   // heads up: normal filters can be simple object too
   // but in this example the filter is a function
@@ -72,7 +72,7 @@ Person.filters({
 // client/views/company/company_person_index.js
 Template.CompanyPersonIndex.persons = function (company) {
   var query = Person.query();
-  query.filter('employedAt', [company]);
+  query.filter('employedAt', true, [company]);
   return query.execute();
   // executes Person.find({
   //   $and: [{ employedAt: "[company id]" }, { deletedAt: null }]
@@ -89,7 +89,7 @@ Methods you shouldn't use are marked with an `_` prefix on there names.
 All methods described here are available on both the client and the server
 so there is no restriction to it unless told otherwise.
 
-## `Collection` extension
+## `Collection` methods
 These methods are added to the meteors Collection prototype
 so they are available on every collection you have in your app.
 
@@ -97,8 +97,7 @@ so they are available on every collection you have in your app.
 Adds filters to the collection which are by default disabled.
 Calling this method more then once will add the new filters, not replace them.
 However, if a filter is defined that already exists, it will be overwritten.
-
-*Arguments*
+##### Arguments
 - **methods** Object <br>
   Dictionary whose keys are filter names and values are functions
   or [Mongo Selectors (object or string)](http://docs.meteor.com/#selectors).
@@ -106,10 +105,9 @@ However, if a filter is defined that already exists, it will be overwritten.
 #### `collection.defaultFilters(methods)`
 The same as [filter](#collectionfiltersmethods) but by default enabled.
 
-#### `colleciton.query([selector])`
+#### `collection.query([selector])`
 Creates a [Query](#query) object to build the query with.
-
-*Arguments*
+##### Arguments
 - **selector** [Mongo Selector (object or string)](http://docs.meteor.com/#selectors) <br>
   This argument is exactly the same as the one on the
   [find](http://docs.meteor.com/#find) method of meteor.
@@ -117,32 +115,31 @@ Creates a [Query](#query) object to build the query with.
 
 ## `Query` object
 This object abstracts the query sent to the [find](http://docs.meteor.com/#find) method.
-It can be created with the collection method [query](#collectionquery)
+It can be created with the collection method [query](#collectionqueryselector)
 and can be executed with the properly named method [execute](#queryexecuteoptions)
 
 #### `Query.execute([options])`
 Builds the query and passes it to the [find](http://docs.meteor.com/#find) method.
 The option parameter is the same as the one of find.
-
-*Arguments*
+##### Arguments
 - **Options** Object <br>
   This argument is exactly the same as the one on the
   [find](http://docs.meteor.com/#find) method of meteor.
 
-#### `Query.filter(name, args)`
+#### `Query.filter(name, enable, [args])`
 This method can change which filter will be used for that query.
 If the name of the filter does not exist a warning will be given though `console.warn`
-
-*Arguments*
+##### Arguments
 - **name** String <br>
   The name of the filter which should be enabled or disabled.
-- **args** Boolean or Array <br>
-  If `false` this filter will be disabled for the current query. If `true` or an Array it will be enabled.
-  When an Array is used the values will be passed to the filter function (if it is a function).
+- **enable** Boolean <br>
+  A boolean to enable or disable this filter.
+- **args** Array <br>
+  These values will be passed to the filter function (if it is a function).
+  It will be ignored if *enable* is `false`.
 
 #### `Query.condition(selector)`
 Adds another selector to the query. It will be executed just like a filter (with an `$and`).
-
-*Arguments*
+##### Arguments
 - **selector** [Mongo Selector (object or string)](http://docs.meteor.com/#selectors) <br>
   This argument is exactly the same as the one on the [find](http://docs.meteor.com/#find) method of meteor.
