@@ -62,7 +62,7 @@ Person.defaultFilters({
 // these filters are disabled by default
 Person.filters({
   employedAt: function (company) {
-    return { employedAt: company };
+    return { employedAt: company._id };
   }
   // heads up: normal filters can be simple object too
   // but in this example the filter is a function
