@@ -98,7 +98,7 @@ _.extend(Query.prototype, {
       throw new Error("filter arguments must be an array, got " + typeof args);
     }
     this._filterMod[name] = { enabled: enable, args: args || [] };
-    if (this._getFilters().hasOwnProperty(name)) {
+    if (! this._getFilters().hasOwnProperty(name)) {
       console.warn("The filter '" + name + "' does not exist", this._collection);
     }
   },
