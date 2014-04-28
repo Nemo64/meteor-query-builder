@@ -143,3 +143,7 @@ Adds another selector to the query. It will be executed just like a filter (with
 ##### Arguments
 - **selector** [Mongo Selector (object or string)](http://docs.meteor.com/#selectors) <br>
   This argument is exactly the same as the one on the [find](http://docs.meteor.com/#find) method of meteor.
+
+
+## Contributing and Feedback
+Every kind of Contributing and/or Feedback is welcome. If an issue or a pull request isn't what you need you can contact me at cheat2000-git [at] yahoo.de or talk about it on [google groups](https://groups.google.com/d/topic/meteor-talk/dkgLpPppOFU/discussion)
