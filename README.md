@@ -1,4 +1,4 @@
-# Meteor QueryBuilder package
+# Meteor QueryBuilder package [![Build Status](https://travis-ci.org/Nemo64/meteor-query-builder.svg?branch=master)](https://travis-ci.org/Nemo64/meteor-query-builder)
 
 This package will help you create reusable queries by defining them as filters
 which can be enabled or disabled for a query!
