@@ -82,7 +82,7 @@ Tinytest.add("query-builder - enable/disable filter", function (test) {
     "disable softDelete"
   );
   
-  query.filter("callback", ['parameter']);
+  query.filter("callback", true, ['parameter']);
   test.equal(
     testExecute(query),
     { $and: [{ owner: "Meteor.userId()" }, { parameter: 'parameter' }] },

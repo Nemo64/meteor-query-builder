@@ -90,29 +90,37 @@ _.extend(Query.prototype, {
    * be applied as arguments to the filter function (if it is a function)
    * 
    * @param {string} name
+   * @param {boolean} enable
    * @param {boolean|Array} args
    */
-  filter: function (name, args) {
-    this._filterMod[name] = args;
-    // XXX should there be a warning if the filter does not exist?
+  filter: function (name, enable, args) {
+    if (args != null && !_.isArray(args)) {
+      throw new Error("filter arguments must be an array, got " + typeof args);
+    }
+    this._filterMod[name] = { enabled: enable, args: args || [] };
+    if (this._getFilters().hasOwnProperty(name)) {
+      console.warn("The filter '" + name + "' does not exist", this._collection);
+    }
   },
   
   /**
    * Gets all filters for the current collection.
    *
    * @private
-   * @returns {Object.<string, Object>}
+   * @returns {!Object.<string, Object>}
    */
   _getFilters: function () {
-    var filters = this._collection._queryBuilderFilter;
-    return _.isObject(filters) ? filters : {};
+    if (! _.isObject(this._collection._queryBuilderFilter)) {
+      this._collection._queryBuilderFilter = {};
+    }
+    return this._collection._queryBuilderFilter;
   },
   
   /**
    * Builds the query and returns it!
-   * This is mostly usefull for tests and debugging.
+   * Outside of #execute this is mostly usefull for tests and debugging.
    *
-   * @returns {Object.<string, *>}
+   * @returns {!Object.<string, *>}
    */
   build: function () {
     var conditions = _.clone(this._conditions);
@@ -123,10 +131,8 @@ _.extend(Query.prototype, {
       var args = [];
       if (this._filterMod.hasOwnProperty(name)) {
         var mod = this._filterMod[name];
-        isEnabled = mod ? true : false;
-        if (_.isArray(mod)) {
-          args = mod;
-        }
+        isEnabled = mod.enabled;
+        args = mod.args;
       }
       if (isEnabled) {
         // TODO the callback probably wants some parameters

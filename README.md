@@ -1,6 +1,10 @@
 # Meteor QueryBuilder package
 
-This package will help you create reusable queries by defining them as filters which can be enabled or disabled for a query!
+This package will help you create reusable queries by defining them as filters
+which can be enabled or disabled for a query!
+
+This way you avoid messy queries all over your project and changes in your
+collections (like adding user restrictions) are very easy.
 
 [View API Documentation on GitHub](https://github.com/Nemo64/meteor-query-builder#api)
 
@@ -70,24 +74,34 @@ Template.CompanyPersonIndex.persons = function (company) {
   var query = Person.query();
   query.filter('employedAt', [company]);
   return query.execute();
-  // executes Person.find({ $and: [{ employedAt: "[company id]" }, { deletedAt: null }] });
+  // executes Person.find({
+  //   $and: [{ employedAt: "[company id]" }, { deletedAt: null }]
+  // });
 }
 ```
 
 ## API
-The following methods are the ones you should use. There are more methods available if you study the source, but only the ones listed here are safe to use and won't change in the near future. Methods you shouldn't use are marked with an `_` prefix on there names.
+The following methods are the ones you should use.
+There are more methods available if you study the source,
+but only those listed here are safe to use and won't change in the near future.
+Methods you shouldn't use are marked with an `_` prefix on there names.
 
-All methods described here are available on both the client and the server so there is no restriction to it unless told otherwise.
+All methods described here are available on both the client and the server
+so there is no restriction to it unless told otherwise.
 
 ## `Collection` extension
-These methods are added to the meteors Collection prototype so they are available on every collection you have in your app.
+These methods are added to the meteors Collection prototype
+so they are available on every collection you have in your app.
 
 #### `collection.filters(methods)`
-Adds filters to the collection which are by default disabled. Calling this method more then once will add the new filters, not replace them. However, if a filter is defined that already exists, it will be overwritten.
+Adds filters to the collection which are by default disabled.
+Calling this method more then once will add the new filters, not replace them.
+However, if a filter is defined that already exists, it will be overwritten.
 
 *Arguments*
 - **methods** Object <br>
-  Dictionary whose keys are filter names and values are functions or [Mongo Selectors (object or string)](http://docs.meteor.com/#selectors).
+  Dictionary whose keys are filter names and values are functions
+  or [Mongo Selectors (object or string)](http://docs.meteor.com/#selectors).
 
 #### `collection.defaultFilters(methods)`
 The same as [filter](#collectionfiltersmethods) but by default enabled.
@@ -97,21 +111,27 @@ Creates a [Query](#query) object to build the query with.
 
 *Arguments*
 - **selector** [Mongo Selector (object or string)](http://docs.meteor.com/#selectors) <br>
-  This argument is exactly the same as the one on the [find](http://docs.meteor.com/#find) method of meteor.
+  This argument is exactly the same as the one on the
+  [find](http://docs.meteor.com/#find) method of meteor.
 
 
 ## `Query` object
-This object abstracts the query sent to the [find](http://docs.meteor.com/#find) method. It can be created with the collection method [query](#collectionquery) and can be executed with the properly named method [execute](#queryexecuteoptions)
+This object abstracts the query sent to the [find](http://docs.meteor.com/#find) method.
+It can be created with the collection method [query](#collectionquery)
+and can be executed with the properly named method [execute](#queryexecuteoptions)
 
 #### `Query.execute([options])`
-Builds the query and passes it to the [find](http://docs.meteor.com/#find) method. The option parameter is the same as the one of find.
+Builds the query and passes it to the [find](http://docs.meteor.com/#find) method.
+The option parameter is the same as the one of find.
 
 *Arguments*
 - **Options** Object <br>
-  This argument is exactly the same as the one on the [find](http://docs.meteor.com/#find) method of meteor.
+  This argument is exactly the same as the one on the
+  [find](http://docs.meteor.com/#find) method of meteor.
 
 #### `Query.filter(name, args)`
 This method can change which filter will be used for that query.
+If the name of the filter does not exist a warning will be given though `console.warn`
 
 *Arguments*
 - **name** String <br>
