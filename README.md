@@ -2,7 +2,7 @@
 
 This package will help you create reusable queries by defining them as filters which can be enabled or disabled for a query!
 
-[View API Documentation](#api)
+[View API Documentation on GitHub](https://github.com/Nemo64/meteor-query-builder#api)
 
 ## Examples
 ### soft-delete
